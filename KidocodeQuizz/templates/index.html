@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Quiz Arena - Kidocode</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: Poppins, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex-grow: 1;
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            width: 80%;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .join-quiz, .create-quiz {
+            margin: 1.5rem 0;
+        }
+
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 0.5rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is where the header will be loaded dynamically -->
+    <iframe src="header.html" width="100%" height="auto" style="border:none;"></iframe>
+
+    <div class="container">
+        <h1>Welcome to Web Quiz Arena!</h1>
+        <div class="join-quiz">
+            <h2>Join a Quiz</h2>
+            <input type="text" id="quiz-code" placeholder="Enter Quiz Code">
+            <button id="join-btn">Join Quiz</button>
+        </div>
+        <div class="create-quiz">
+            <h2>Create a Quiz</h2>
+            <button id="create-btn">Create New Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Load header dynamically from header.html
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("header-container").innerHTML = data)
+            .catch(error => console.error("Error loading header:", error));
+
+        // Join Quiz Functionality
+        document.getElementById("join-btn").addEventListener("click", () => {
+            const quizCode = document.getElementById("quiz-code").value.trim();
+            if (quizCode) {
+                alert(`Joining quiz: ${quizCode}`);  // Replace with Firebase logic
+            } else {
+                alert("Please enter a quiz code.");
+            }
+        });
+
+        // Create Quiz Functionality
+        document.getElementById("create-btn").addEventListener("click", () => {
+            alert("Creating new quiz...");  // Replace with Firebase logic
+        });
+    </script>
+    
+</body>
+</html>
