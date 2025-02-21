@@ -8,78 +8,199 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 20px;
-            padding: 20px;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #222;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .header button {
-            background: red;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .container {
-            max-width: 700px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .quiz-title {
-            font-size: 24px;
-            padding: 10px;
-            width: 90%;
-            text-align: center;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .question {
-            background: #fff;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-        }
-        .add-question-btn {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .question-type-container {
-            display: none;
-            margin-top: 10px;
-        }
-        select, input[type="text"], input[type="file"] {
-            width: 80%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .add-remove-btns {
-            margin-top: 10px;
-        }
+        /* General Page Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header Section */
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #007BFF;
+    color: white;
+    padding: 15px 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.header button:hover {
+    background: #cc0000;
+}
+
+/* Main Container */
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Quiz Title */
+.quiz-title {
+    font-size: 20px;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.quiz-title:focus {
+    border-color: #007BFF;
+}
+
+/* Question Box */
+.question {
+    background: #f9f9f9;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.add-question-btn,
+.add-remove-btns button {
+    display: block;
+    margin: 15px auto;
+    padding: 10px 15px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.add-question-btn:hover,
+.add-remove-btns button:hover {
+    background: #0056b3;
+}
+
+/* Question Type Container */
+.question-type-container {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Input Fields */
+select, input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+}
+
+select:focus, input[type="text"]:focus {
+    border-color: #007BFF;
+}
+
+/* Answer Options */
+.answers {
+    margin-top: 10px;
+}
+
+.option, .answers div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.answers input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.answers input[type="checkbox"],
+.answers input[type="radio"] {
+    margin-left: 5px;
+}
+
+/* Add & Remove Buttons */
+.add-remove-btns button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.add-remove-btns button:hover {
+    background: #0056b3;
+}
+
+/* Option Layout */
+.option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.option input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.option input[type="checkbox"],
+.option input[type="radio"] {
+    margin-left: 5px;
+}
+
+/* Remove Option Button */
+.option button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.option button:hover {
+    background: #cc0000;
+}
     </style>
 </head>
 <body>
@@ -104,7 +225,7 @@
                 <option value="typing">Typing Answer</option>
             </select>
         </div>
-    </div>    
+    </div>
 
     <script>
         let questions = [];
