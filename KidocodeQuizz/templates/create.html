@@ -55,11 +55,20 @@
             border-radius: 8px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
-        .answers {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            align-items: center;
+        .add-question-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .question-type-container {
+            display: none;
+            margin-top: 10px;
         }
         select, input[type="text"], input[type="file"] {
             width: 80%;
@@ -84,40 +93,65 @@
     
     <div class="container">
         <input type="text" id="quizTitle" class="quiz-title" placeholder="Enter quiz title...">
-        <button onclick="addQuestion()">Add Question</button>
         <div id="questionContainer"></div>
-    </div>
+        <button onclick="toggleQuestionTypeMenu()" class="add-question-btn">Add Question</button>
+        <div class="question-type-container" id="questionTypeContainer">
+            <label for="questionType">Select Question Type:</label>
+            <select id="questionType" onchange="addSelectedQuestion()">
+                <option value="">-- Select --</option>
+                <option value="single">Single Choice</option>
+                <option value="multi">Multiple Choice</option>
+                <option value="typing">Typing Answer</option>
+            </select>
+        </div>
+    </div>    
 
     <script>
         let questions = [];
-        
-        function addQuestion() {
+
+        function toggleQuestionTypeMenu() {
+            let menu = document.getElementById("questionTypeContainer");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function addSelectedQuestion() {
+            let type = document.getElementById("questionType").value;
+            if (type) {
+                addQuestion(type);
+                document.getElementById("questionType").value = "";
+                document.getElementById("questionTypeContainer").style.display = "none";
+            }
+        }
+
+        function addQuestion(type) {
             let questionID = `q${questions.length + 1}`;
             let questionHTML = `
                 <div class="question" id="${questionID}">
                     <input type="text" placeholder="Enter Question Text" class="quiz-title">
                     <input type="file" onchange="uploadMedia(event, '${questionID}')">
-                    <select onchange="changeAnswerType('${questionID}', this.value)">
-                        <option value="single">Single Choice</option>
-                        <option value="multi">Multiple Choice</option>
-                        <option value="typing">Typing Answer</option>
-                    </select>
                     <div class="answers" id="answers-${questionID}">
-                        ${generateAnswerFields(questionID, 'single')}
+                        ${generateAnswerFields(questionID, type)}
                     </div>
                     <div class="add-remove-btns">
-                        <button onclick="duplicateQuestion('${questionID}')">Duplicate</button>
+                        <button onclick="addOption('${questionID}', '${type}')">Add Option</button>
                         <button onclick="removeQuestion('${questionID}')">Remove</button>
                     </div>
                 </div>
             `;
             document.getElementById("questionContainer").innerHTML += questionHTML;
-            questions.push({ questionID, type: 'single', answers: [] });
+            questions.push({ questionID, type, answers: [] });
         }
-        
+
         function generateAnswerFields(id, type) {
             if (type === 'typing') {
-                return `<input type="text" placeholder="Correct Answer">`;
+                return `<div class="option"><input type="text" placeholder="Correct Answer"></div>`;
+            } else if (type === 'single') {
+                return `
+                    <div>
+                        <input type="text" placeholder="Option 1"> <input type="radio" name="answer-${id}">
+                        <input type="text" placeholder="Option 2"> <input type="radio" name="answer-${id}">
+                    </div>
+                `;
             } else {
                 return `
                     <div>
@@ -127,23 +161,45 @@
                 `;
             }
         }
-        
-        function changeAnswerType(id, type) {
-            document.getElementById(`answers-${id}`).innerHTML = generateAnswerFields(id, type);
+
+        function addOption(questionID, type) {
+            let answerContainer = document.getElementById(`answers-${questionID}`);
+            let newOption = document.createElement("div");
+            newOption.classList.add("option");
+
+            let optionInput = document.createElement("input");
+            optionInput.type = "text";
+            optionInput.placeholder = "New Option"; // Updated placeholder
+
+            let checkbox;
+            if (type === "multi") {
+                checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+            } else if (type === "single") {
+                checkbox = document.createElement("input");
+                checkbox.type = "radio";
+                checkbox.name = `answer-${questionID}`;
+            }
+
+            let removeBtn = document.createElement("button");
+            removeBtn.innerText = "Remove";
+            removeBtn.onclick = function () {
+                newOption.remove();
+            };
+
+            newOption.appendChild(optionInput);
+            if (checkbox) newOption.appendChild(checkbox);
+            newOption.appendChild(removeBtn);
+
+            answerContainer.appendChild(newOption);
         }
 
-        function saveQuiz() {
-            let quizID = generateQuizID();
-            let title = document.getElementById("quizTitle").value;
-            let quizData = { quizID, title, questions };
-            db.collection("quizzes").doc(quizID).set(quizData).then(() => {
-                alert("Quiz Saved!");
-                window.location.href = `quiz.html?quizID=${quizID}`;
-            });
-        }
-        
-        function generateQuizID() {
-            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        function removeQuestion(questionID) {
+            let questionElement = document.getElementById(questionID);
+            if (questionElement) {
+                questionElement.remove();
+                questions = questions.filter(q => q.questionID !== questionID);
+            }
         }
     </script>
 </body>
