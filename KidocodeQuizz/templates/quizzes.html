@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        iframe {
+            width: 100%;
+            height: 80px;
+            border: none;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .quiz-list {
+            list-style: none;
+            padding: 0;
+        }
+        .quiz-item {
+            background: #f4f4f4;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quiz-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <iframe src="header.html"></iframe>
+    <div class="container">
+        <h2>Your Quizzes</h2>
+        <ul class="quiz-list">
+            <li class="quiz-item">
+                <a href="quiz1.html">Quiz 1</a>
+                <span>Created on: 2025-02-18</span>
+            </li>
+            <li class="quiz-item">
+                <a href="quiz2.html">Quiz 2</a>
+                <span>Created on: 2025-02-17</span>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
