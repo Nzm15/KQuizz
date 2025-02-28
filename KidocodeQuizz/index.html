@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -446,4 +447,454 @@
         const analytics = getAnalytics(app);
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KidoCode Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <style>
+        /* Basic styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #2d1043;
+            color: #fff;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #3f1559;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 98%;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #fff;
+            color: #3f1559;
+        }
+
+        /* Hero Section */
+        #hero {
+            background-color: #00f2ff;
+            color: #2d1043;
+            padding: 60px;
+            text-align: center;
+        }
+
+        #hero h1 {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        #hero p {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+        }
+
+        /* Quiz Posters */
+        #quiz-posters {
+            padding: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .poster {
+            border-radius: 45px;
+            overflow: hidden;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+            background-color: #3f1559;
+            position: relative;
+        }
+
+        .poster:hover {
+            transform: scale(1.05);
+        }
+
+        .poster img {
+            width: 100%;
+            display: block;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .poster-content {
+            padding: 20px;
+            color: white;
+        }
+
+        .poster h2 {
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 1.2em;
+            color: #ccc;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #quiz-posters {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        /* Navbar animation */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        nav a:hover {
+            animation: shake 0.5s;
+        }
+
+        /* Quiz Poster Animations */
+        .poster {
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
+        }
+
+        .poster:hover {
+            transform: scale(1.05);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Fade-in animation for quiz posters */
+        .poster {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 2; }
+        }
+
+        /* Bounce animation */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40%, 60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .poster:nth-child(even) {
+            animation: bounce 1.5s infinite;
+        }
+
+        #quiz-sections {
+            padding: 20px;
+        }
+
+        .quiz-category {
+            margin-bottom: 30px;
+        }
+
+        .quiz-category h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .quiz-posters {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* Explicitly create three columns */
+            gap: 10px;
+        } 
+
+        #quiz-navigation {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #quiz-navigation button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        /* ... (Your existing .poster and other styles) ... */
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20.6924" y="8" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="18.2149" y="10.4614" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="20.6924" y="12.9233" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="8.84619" y="8" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="11.38477" y="10.4614" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="8.84619" y="12.9233" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="8.61523" y="19.0769" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="20.9229" y="19.0769" width="2.46154" height="2.46154" fill="white"></rect>
+                <rect x="11.0771" y="21.5386" width="9.84616" height="2.46154" fill="white"></rect>
+                <rect x="8" y="18" width="3" height="1" fill="white"></rect>
+                <rect x="11" y="19" width="3" height="1" fill="white"></rect>
+                <rect x="14" y="20" width="4" height="1" fill="white"></rect>
+                <rect x="18" y="19" width="3" height="1" fill="white"></rect>
+                <rect x="21" y="18" width="3" height="1" fill="white"></rect>
+                <rect x="1.23077" y="1.23077" width="29.5385" height="29.5385" rx="4.92308" stroke="white" stroke-width="2.46154"></rect>
+            </svg>
+            <h1 ><a href ="index.html">KQuizz</a></h1>
+        </div>
+        <ul>
+            <li><a href="#">Cubie</a></li>
+            <li><a href="#">KRoom(Zoom)</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+    </nav>
+
+    <div id="hero">
+        <h1>KQuizz</h1>
+        <p>Test your skills and learn while having fun!</p>
+    </div>
+
+    <div id="quiz-navigation">
+        <button id="beginner-btn"><img src="beginner_btn.png" alt="Beginner"></button>
+        <button id="intermediate-btn"><img src="intermediate_btn.png" alt="Intermediate"></button>
+        <button id="advanced-btn"><img src="advanced_btn.png" alt="Advanced"></button>
+    </div>
+
+    <div id="quiz-sections">
+        <div class="quiz-category" id="beginner-quizzes">
+            <h2>Beginner Quizzes</h2>
+            <div class="quiz-posters">
+                <div class="poster">
+                    <img src="C:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\HTML_poster.png" alt="HTML Beginner Quiz">
+                    <div class="poster-content">
+                        <h2>HTML Beginner Quiz</h2>
+                        <p>Learn the basics of HTML and build your first webpage!</p>
+                        <div class="timer" id="html-beginner-timer">Time Left: 10:00</div>
+                        <a href="html_beginner_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+                <div class="poster">
+                    <img src="c:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\Python_poster.png" alt="Python Beginner Quiz">
+                    <div class="poster-content">
+                        <h2>Python Beginner Quiz</h2>
+                        <p>Get started with Python programming.</p>
+                        <div class="timer" id="python-beginner-timer">Opens in: 05:00</div>
+                        <a href="python_beginner_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+                <div class="poster">
+                    <img src="c:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\Electronics_poster.png" alt="Electronics Beginner Quiz">
+                    <div class="poster-content">
+                        <h2>Electronics Beginner Quiz</h2>
+                        <p>Learn the basics of electronics with Arduino.</p>
+                        <div class="timer" id="electronics-beginner-timer">Time Left: 10:00</div>
+                        <a href="electronics_beginner_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-category" id="intermediate-quizzes" style="display: none;">
+            <h2>Intermediate Quizzes</h2>
+            <div class="quiz-posters">
+                <div class="poster">
+                    <img src="C:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\HTML_poster.png" alt="HTML Intermediate Quiz">
+                    <div class="poster-content">
+                        <h2>HTML Intermediate Quiz</h2>
+                        <p>Test your knowledge of intermediate HTML concepts.</p>
+                        <div class="timer" id="html-intermediate-timer">Opens in: 05:00</div>
+                        <a href="html_intermediate_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+                <div class="poster">
+                    <img src="c:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\Python_poster.png" alt="Python Intermediate Quiz">
+                    <div class="poster-content">
+                        <h2>Python Intermediate Quiz</h2>
+                        <p>Test your knowledge of intermediate Python concepts.</p>
+                        <div class="timer" id="python-intermediate-timer">Opens in: 05:00</div>
+                        <a href="python_intermediate_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+                <div class="poster">
+                    <img src="c:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\Electronics_poster.png" alt="Electronics Intermediate Quiz">
+                    <div class="poster-content">
+                        <h2>Electronics Intermediate Quiz</h2>
+                        <p>Test your knowledge of intermediate Electronics concepts.</p>
+                        <div class="timer" id="electronics-intermediate-timer">Opens in: 05:00</div>
+                        <a href="electronics_intermediate_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-category" id="advanced-quizzes" style="display: none;">
+            <h2>Advanced Quizzes</h2>
+            <div class="quiz-posters">
+                <div class="poster">
+                    <img src="C:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\HTML_poster.png" alt="HTML Advanced Quiz">
+                    <div class="poster-content">
+                        <h2>HTML Advanced Quiz</h2>
+                        <p>Test your knowledge of advanced HTML concepts.</p>
+                        <div class="timer" id="html-advanced-timer">Opens in: 05:00</div>
+                        <a href="html_advanced_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+                <div class="poster">
+                    <img src="c:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\Python_poster.png" alt="Python Advanced Quiz">
+                    <div class="poster-content">
+                        <h2>Python Advanced Quiz</h2>
+                        <p>Challenge yourself with advanced Python topics.</p>
+                        <div class="timer" id="python-advanced-timer">Time Left: 10:00</div>
+                        <a href="python_advanced_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+                <div class="poster">
+                    <img src="c:\Users\User\OneDrive\Desktop\KidocodeQuizz\src\Electronics_poster.png" alt="Electronics Advanced Quiz">
+                    <div class="poster-content">
+                        <h2>Electronics Advanced Quiz</h2>
+                        <p>Explore advanced electronics concepts with Arduino.</p>
+                        <div class="timer" id="electronics-advanced-timer">Opens in: 05:00</div>
+                        <a href="electronics_advanced_quiz.html" class="poster-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // JavaScript for timers and poster clicks
+        const posters = document.querySelectorAll('.poster');
+    
+        posters.forEach(poster => {
+            const timer = poster.querySelector('.timer');
+            const posterLink = poster.querySelector('.poster-link');
+    
+            // Timer logic (replace with your actual timer implementation)
+            let timeLeft = 600; // Example: 10 minutes in seconds
+    
+            function updateTimer() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timer.textContent = `Time Left: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+    
+                if (timeLeft < 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up!");
+                }
+            }
+    
+            updateTimer(); // Initial display
+            const timerInterval = setInterval(updateTimer, 1000); // Update every second
+    
+            // Poster click redirect
+            posterLink.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                window.location.href = posterLink.href; // Redirect to quiz page
+            });
+        });
+    
+        // JavaScript for dynamic quiz category navigation
+        const beginnerBtn = document.getElementById('beginner-btn');
+        const intermediateBtn = document.getElementById('intermediate-btn');
+        const advancedBtn = document.getElementById('advanced-btn');
+    
+        const beginnerQuizzes = document.getElementById('beginner-quizzes');
+        const intermediateQuizzes = document.getElementById('intermediate-quizzes');
+        const advancedQuizzes = document.getElementById('advanced-quizzes');
+    
+        beginnerBtn.addEventListener('click', () => {
+            beginnerQuizzes.style.display = 'block';
+            intermediateQuizzes.style.display = 'none';
+            advancedQuizzes.style.display = 'none';
+        });
+    
+        intermediateBtn.addEventListener('click', () => {
+            beginnerQuizzes.style.display = 'none';
+            intermediateQuizzes.style.display = 'block';
+            advancedQuizzes.style.display = 'none';
+        });
+    
+        advancedBtn.addEventListener('click', () => {
+            beginnerQuizzes.style.display = 'none';
+            intermediateQuizzes.style.display = 'none';
+            advancedQuizzes.style.display = 'block';
+        });
+    </script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+    
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyACuOQYo-Jr0lFVVxMPx9J6_wabFZD7K6s",
+            authDomain: "kidocodequizz-7d53d.firebaseapp.com",
+            databaseURL: "https://kidocodequizz-7d53d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "kidocodequizz-7d53d",
+            storageBucket: "kidocodequizz-7d53d.firebasestorage.app",
+            messagingSenderId: "963577178066",
+            appId: "1:963577178066:web:e881adee9be9751511ca0b",
+            measurementId: "G-YDT7ETW5S3"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+</body>
+>>>>>>> 212c5b5ea6307d37f506478942dbade501e7cfbf
 </html>
