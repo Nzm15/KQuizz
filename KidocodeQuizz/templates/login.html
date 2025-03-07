@@ -5,54 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        /* Global Styles */
+        html, body {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
+
+        /* Login Container */
         .login-container {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        .login-container h2 {
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 320px;
             text-align: center;
+            transition: 0.3s ease-in-out;
+            margin-top: 100px; /* Adjusted for navbar */
         }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #3f1559;
+        }
+
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            text-align: left;
         }
+
         .input-group label {
-            display: block;
-            font-weight: bold;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
         }
+
         .input-group input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s ease-in-out;
         }
+
+        .input-group input:focus {
+            border-color: #3f1559;
+            box-shadow: 0 0 8px rgba(63, 21, 89, 0.3);
+            outline: none;
+        }
+
         .login-btn {
             width: 100%;
-            padding: 10px;
-            background-color: #28a745;
+            padding: 12px;
+            background-color: #3f1559;
             border: none;
             color: white;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
+            transition: 0.3s ease-in-out;
         }
+
         .login-btn:hover {
-            background-color: #218838;
+            background-color: #2c0d40;
+            transform: scale(1.03);
+        }
+
+        .forgot-password {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #555;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .forgot-password:hover {
+            color: #3f1559;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+
+    <!-- Login Form -->
     <div class="login-container">
         <h2>Login</h2>
         <form action="/login" method="POST">
@@ -65,6 +118,7 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit" class="login-btn">Sign In</button>
+            <a href="#" class="forgot-password">Forgot Password?</a>
         </form>
     </div>
 </body>
