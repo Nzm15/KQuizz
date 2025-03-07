@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KQ Admin - View Quizzes</title>
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .admin-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Quiz Section List Styles */
+        .quiz-section {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .quiz-section h3 {
+            margin-top: 0;
+        }
+
+        .quiz-section .levels {
+            font-weight: bold;
+        }
+
+        .quiz-section .poster-preview img {
+            max-width: 200px;
+            max-height: 150px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KQ Admin - View Quizzes</title>
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .admin-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Quiz Section List Styles */
+        .quiz-section {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            text-align: center;
+        }
+
+        nav li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="admin.html">Main</a></li>
+            <li><a href="admin-view.html">View Quizzes</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin-container">
+        <h1>View Quizzes</h1>
+
+        <div class="section" id="quizzes-section">
+            <h2>Quizzes</h2>
+            <div id="quizzes-list"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizzesList = document.getElementById('quizzes-list');
+
+            fetch('questions.json')
+                .then(response => response.json())
+                .then(questions => {
+                    const quizzes = groupByQuizSection(questions);
+                    displayQuizzes(quizzes);
+                })
+                .catch(error => console.error('Error fetching questions:', error));
+
+            function groupByQuizSection(questions) {
+                const quizzes = {};
+                questions.forEach((question, index) => {
+                    question.id = index;
+                    if (!quizzes[question.quizSection]) {
+                        quizzes[question.quizSection] = [];
+                    }
+                    quizzes[question.quizSection].push(question);
+                });
+                return quizzes;
+            }
+
+            function displayQuizzes(quizzes) {
+                quizzesList.innerHTML = ''; // Clear existing list
+                for (const quizSection in quizzes) {
+                    const quizElement = document.createElement('div');
+                    quizElement.classList.add('quiz-section');
+                    quizElement.innerHTML = `
+                        <h3>${quizSection}</h3>
+                        <ul>
+                            ${quizzes[quizSection].map(q => `
+                                <li>${q.text}
+                                    <button class="edit-question" data-id="${q.id}">Edit</button>
+                                    <button class="delete-question" data-id="${q.id}">Delete</button>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    quizzesList.appendChild(quizElement);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

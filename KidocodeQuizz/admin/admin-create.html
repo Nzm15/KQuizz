@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KQuizz Admin</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #4b0082;
+            color: white;
+            position: fixed;
+            transition: width 0.3s ease-in-out;
+            padding: 20px;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .nav-links li {
+            margin: 15px 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .nav-links a:hover {
+            transform: scale(1.1);
+        }
+
+        /* Disable hover effect after clicking */
+        .nav-links a.clicked {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .theme-toggle {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 60px;
+        }
+
+        /* Quiz Creation */
+        .quiz-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        /* Difficulty Selection */
+        .difficulty-section {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .difficulty-section label {
+            cursor: pointer;
+            padding: 10px;
+            background: #4b0082;
+            color: white;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .difficulty-section input:checked + label {
+            background: #ffcc00;
+            color: #4b0082;
+        }
+
+        /* Question Sections */
+        .question-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .drag-area {
+            min-height: 150px;
+            border: 2px dashed #4b0082;
+            padding: 20px;
+            text-align: center;
+            cursor: grab;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            background: #e0e0e0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: grab;
+        }
+
+        .progress {
+            font-size: 14px;
+            color: #4b0082;
+            margin-top: 5px;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background: #222;
+            color: white;
+        }
+
+        .dark-mode .quiz-section {
+            background: #333;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>KQuizz</h2>
+            <button id="toggleSidebar"><i class="fas fa-bars"></i></button>
+        </div>
+        <ul class="nav-links">
+            <li><a href="admin-dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="admin-create.html" class="nav-item"><i class="fas fa-plus-circle"></i> Create Quiz</a></li>
+            <li><a href="#" class="nav-item"><i class="fas fa-tasks"></i> Manage Quizzes</a></li>
+            <li><a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="theme-toggle">
+            <span>Dark Mode</span>
+            <input type="checkbox" id="darkModeToggle">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Welcome, Admin!</h1>
+
+        <!-- Quiz Creation -->
+        <div class="quiz-section">
+            <h2>Create Quiz</h2>
+            <label>Quiz Title:</label>
+            <input type="text" id="quizTitle" placeholder="Enter quiz title" style="width:100%; padding:8px; margin: 10px 0;">
+            
+            <h3>Select Difficulty:</h3>
+            <div class="difficulty-section">
+                <input type="checkbox" id="beginner" class="difficulty" value="beginner" hidden>
+                <label for="beginner">Beginner</label>
+                
+                <input type="checkbox" id="intermediate" class="difficulty" value="intermediate" hidden>
+                <label for="intermediate">Intermediate</label>
+                
+                <input type="checkbox" id="advanced" class="difficulty" value="advanced" hidden>
+                <label for="advanced">Advanced</label>
+            </div>
+        </div>
+
+        <!-- Question Sections -->
+        <div id="questions-area"></div>
+    </div>
+
+    <script>
+        const sidebar = document.querySelector(".sidebar");
+        const toggleSidebar = document.getElementById("toggleSidebar");
+        const darkModeToggle = document.getElementById("darkModeToggle");
+        const questionsArea = document.getElementById("questions-area");
+
+        // Sidebar Toggle
+        toggleSidebar.addEventListener("click", () => {
+            sidebar.classList.toggle("collapsed");
+        });
+
+        // Dark Mode Toggle
+        darkModeToggle.addEventListener("change", () => {
+            document.body.classList.toggle("dark-mode");
+        });
+
+        // Disable Hover Effect After Clicking
+        document.querySelectorAll(".nav-item").forEach(item => {
+            item.addEventListener("click", function () {
+                this.classList.add("clicked");
+            });
+        });
+
+        // Difficulty Selection
+        document.querySelectorAll(".difficulty").forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const difficulty = this.value;
+                let section = document.getElementById(`questions-${difficulty}`);
+
+                if (this.checked) {
+                    if (!section) {
+                        section = document.createElement("div");
+                        section.id = `questions-${difficulty}`;
+                        section.classList.add("quiz-section", "question-container", "active");
+                        section.innerHTML = `
+                            <h3>${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Questions</h3>
+                            <div class="drag-area"></div>
+                            <p class="progress">0/20 questions added</p>
+                            <button onclick="addQuestion('${difficulty}')">+ Add Question</button>
+                        `;
+                        questionsArea.appendChild(section);
+                    }
+                } else {
+                    section?.remove();
+                }
+            });
+        });
+    </script>
+    <script type="module">
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+    
+        const db = getDatabase();
+    
+        document.getElementById("publish-quiz").addEventListener("click", () => {
+            const quizTitle = document.getElementById("quizTitle").value;
+            const difficulty = document.querySelector(".difficulty:checked").value;
+            const posterInput = document.getElementById("posterImage");
+    
+            if (!quizTitle || !difficulty || !posterInput.files.length) {
+                alert("Please fill all fields!");
+                return;
+            }
+    
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const quizData = {
+                    title: quizTitle,
+                    difficulty: difficulty,
+                    poster: e.target.result // Convert image to base64
+                };
+    
+                set(ref(db, "quizzes/" + quizTitle), quizData)
+                    .then(() => alert("Quiz Published Successfully!"))
+                    .catch((error) => alert("Error: " + error));
+            };
+    
+            reader.readAsDataURL(posterInput.files[0]);
+        });
+    </script>
+    
+</body>
+</html>
